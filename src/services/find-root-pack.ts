@@ -1,9 +1,9 @@
 import CoefficientPack from '../types/coefficient-pack'
-import RootPack from '../types/root-pack'
+import FindResult from '../types/find-result'
 
-const findRootPack = (coefficientPack: CoefficientPack): RootPack => {
+const findRootPack = (coefficientPack: CoefficientPack): FindResult => {
   coefficientPack
-  return { r1: 0, r2: 0 }
+  return { success: false }
 }
 
 export default findRootPack

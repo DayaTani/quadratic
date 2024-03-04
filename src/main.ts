@@ -8,9 +8,9 @@ const main = (args: string[], outPrinter: Printer, errPrinter: Printer): void =>
   try {
     const coefficentPack = parseArguments(args)
 
-    const rootPack = findRootPack(coefficentPack)
+    const findResult = findRootPack(coefficentPack)
 
-    printResult(rootPack, outPrinter)
+    printResult(findResult, outPrinter)
   } catch (error) {
     handleError(error, errPrinter)
   }

@@ -33,8 +33,8 @@ describe('main', () => {
     const coefficientPack = { a: 1, b: 2, c: 3 }
     parseArgumentSpy.mockReturnValue(coefficientPack)
 
-    const rootPack = { r1: -9, r2: 5.6 }
-    findRootPackSpy.mockReturnValue(rootPack)
+    const findResult = { success: true, rootPack: { r1: -9, r2: 5.6 } }
+    findRootPackSpy.mockReturnValue(findResult)
 
     // Execute
     main(args, outPrinter, errPrinter)
@@ -47,7 +47,7 @@ describe('main', () => {
     expect(findRootPackSpy).toHaveBeenCalledWith(coefficientPack)
 
     expect(printResultSpy).toHaveBeenCalledTimes(1)
-    expect(printResultSpy).toHaveBeenCalledWith(rootPack, outPrinter)
+    expect(printResultSpy).toHaveBeenCalledWith(findResult, outPrinter)
 
     expect(handleErrorSpy).not.toHaveBeenCalled()
   })
