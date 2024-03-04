@@ -57,6 +57,8 @@ describe('main', () => {
     const error = new Error('ada error')
     parseArgumentSpy.mockImplementation(() => { throw error })
 
+    handleErrorSpy.mockImplementation(() => {})
+
     // Execute
     main(args, outPrinter, errPrinter)
 
