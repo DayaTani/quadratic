@@ -5,12 +5,12 @@ import main from '../src/main'
 import os from 'os'
 
 describe('main', () => {
-  const filePath = `${os.tmpdir()}/quadratic-test`
+  const inFilePath = `${os.tmpdir()}/quadratic-test-in`
   const content = '7\t2\t4\n'
       + '1\t6\t9\n'
       + 'daniel\ttan\tfriska\n'
-  const outPrinter = jest.fn()
-  const errPrinter = jest.fn()
+  const outFilePath = `${os.tmpdir()}/quadratic-test-out`
+  const errFilePath = `${os.tmpdir()}/quadratic-test-err`
 
   let processLineSpy: jest.SpyInstance
   let handleErrorSpy: jest.SpyInstance
@@ -19,28 +19,31 @@ describe('main', () => {
     processLineSpy = jest.spyOn(processLineModule, 'default')
     handleErrorSpy = jest.spyOn(handleErrorModule, 'default')
 
-    fs.writeFileSync(filePath, content)
+    fs.writeFileSync(inFilePath, content)
   })
 
   afterEach(() => {
     processLineSpy.mockRestore()
     handleErrorSpy.mockRestore()
 
-    fs.rmSync(filePath)
+    fs.rmSync(inFilePath)
   })
 
   it('finds root of a quadratic equation', async () => {
     // Prepare
     processLineSpy.mockImplementation(() => {})
 
+    const outStream = fs.createWriteStream(outFilePath)
+    const errStream = fs.createWriteStream(errFilePath)
+
     // Execute
-    await main(fs.createReadStream(filePath), outPrinter, errPrinter)
+    await main(fs.createReadStream(inFilePath), outStream, errStream)
 
     // Assert
     expect(processLineSpy).toHaveBeenCalledTimes(3)
-    expect(processLineSpy).toHaveBeenNthCalledWith(1, '7\t2\t4', outPrinter)
-    expect(processLineSpy).toHaveBeenNthCalledWith(2, '1\t6\t9', outPrinter)
-    expect(processLineSpy).toHaveBeenNthCalledWith(3, 'daniel\ttan\tfriska', outPrinter)
+    expect(processLineSpy).toHaveBeenNthCalledWith(1, '7\t2\t4', outStream)
+    expect(processLineSpy).toHaveBeenNthCalledWith(2, '1\t6\t9', outStream)
+    expect(processLineSpy).toHaveBeenNthCalledWith(3, 'daniel\ttan\tfriska', outStream)
 
     expect(handleErrorSpy).not.toHaveBeenCalled()
   })
@@ -52,14 +55,17 @@ describe('main', () => {
 
     handleErrorSpy.mockImplementation(() => {})
 
+    const outStream = fs.createWriteStream(outFilePath)
+    const errStream = fs.createWriteStream(errFilePath)
+
     // Execute
-    await main(fs.createReadStream(filePath), outPrinter, errPrinter)
+    await main(fs.createReadStream(inFilePath), outStream, errStream)
 
     // Assert
     expect(processLineSpy).toHaveBeenCalledTimes(1)
-    expect(processLineSpy).toHaveBeenCalledWith('7\t2\t4', outPrinter)
+    expect(processLineSpy).toHaveBeenCalledWith('7\t2\t4', outStream)
 
     expect(handleErrorSpy).toHaveBeenCalledTimes(1)
-    expect(handleErrorSpy).toHaveBeenCalledWith(error, errPrinter)
+    expect(handleErrorSpy).toHaveBeenCalledWith(error, errStream)
   })
 })

@@ -1,30 +1,31 @@
 import { QuadraticError } from '../../../src/errors'
+import fs from 'fs'
 import handleError from '../../../src/services/io/handle-error'
+import os from 'os'
 
 describe('handleError', () => {
+  const filePath = `${os.tmpdir()}/handle-error`
+
   it('prints error if the error is QuadraticError', () => {
     // Prepare
     const error = new QuadraticError('some error')
 
-    const errPrinter = jest.fn()
-
     // Execute
-    handleError(error, errPrinter)
+    handleError(error, fs.createWriteStream(filePath))
 
     // Assert
-    expect(errPrinter).toHaveBeenCalledTimes(1)
-    expect(errPrinter).toHaveBeenCalledWith('some error')
+    expect(fs.readFileSync(filePath, { encoding: 'utf8' })).toBe('some error\n')
+
+    fs.rmSync(filePath)
   })
 
   it('throws the error if the error is not QuadraticError', () => {
     // Prepare
     const error = new Error('other error')
 
-    const errPrinter = jest.fn()
-
     // Execute & assert
-    expect(() => handleError(error, errPrinter)).toThrow('other error')
+    expect(() => handleError(error, fs.createWriteStream(filePath))).toThrow('other error')
 
-    expect(errPrinter).not.toHaveBeenCalled()
+    expect(fs.existsSync(filePath)).toBe(false)
   })
 })

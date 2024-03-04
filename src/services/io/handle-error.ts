@@ -1,12 +1,12 @@
-import Printer from '../../types/printer'
 import { QuadraticError } from '../../errors'
+import { Writable } from 'stream'
 
-const handleError = (error: unknown, errPrinter: Printer): void => {
+const handleError = (error: unknown, errorStream: Writable): void => {
   if (!(error instanceof QuadraticError)) {
     throw error
   }
 
-  errPrinter(error.message)
+  errorStream.write(error.message + '\n')
 }
 
 export default handleError

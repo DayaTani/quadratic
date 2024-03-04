@@ -1,14 +1,14 @@
-import Printer from '../types/printer'
+import { Writable } from 'stream'
 import findRootPack from './find-root-pack'
 import parseArguments from './io/parse-arguments'
 import printResult from './io/print-result'
 
-const processLine = (line: string, outPrinter: Printer): void => {
+const processLine = async (line: string, output: Writable): Promise<void> => {
   const coefficentPack = parseArguments(line)
 
   const findResult = findRootPack(coefficentPack)
 
-  printResult(findResult, outPrinter)
+  await printResult(findResult, output)
 }
 
 export default processLine

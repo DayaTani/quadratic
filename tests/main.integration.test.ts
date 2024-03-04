@@ -5,24 +5,31 @@ import os from 'os'
 describe('quadratic CLI tool', () => {
   it('finds roots of quadratic quations', async () => {
     // Prepare
-    const filePath = `${os.tmpdir()}/quadratic-test`
+    const inFilePath = `${os.tmpdir()}/quadratic-test-in`
     const content = '1\t-5\t6\n'
       + '2\t3\t-5\n'
       + '2\t4\t5\n'
       + '1\t6\t9\n'
-    fs.writeFileSync(filePath, content)
+    fs.writeFileSync(inFilePath, content)
 
-    const outPrinter = jest.fn()
-    const errPrinter = jest.fn()
+    const outFilePath = `${os.tmpdir()}/quadratic-test-out`
+    const errFilePath = `${os.tmpdir()}/quadratic-test-err`
 
     // Execute
-    await main(fs.createReadStream(filePath), outPrinter, errPrinter)
+    await main(
+      fs.createReadStream(inFilePath),
+      fs.createWriteStream(outFilePath),
+      fs.createWriteStream(errFilePath),
+    )
 
     // Assert
-    expect(outPrinter).toHaveBeenCalledTimes(4)
-    expect(outPrinter).toHaveBeenNthCalledWith(1, '3\t2')
-    expect(outPrinter).toHaveBeenNthCalledWith(2, '1\t-2.5')
-    expect(outPrinter).toHaveBeenNthCalledWith(3, '')
-    expect(outPrinter).toHaveBeenNthCalledWith(4, '-3\t-3')
+    const expectedContent = '3\t2\n'
+      + '1\t-2.5\n'
+      + '\n'
+      + '-3\t-3\n'
+
+    expect(fs.readFileSync(outFilePath, { encoding: 'utf8' })).toBe(expectedContent)
+
+    fs.rmSync(outFilePath)
   })
 })
