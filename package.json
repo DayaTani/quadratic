@@ -1,0 +1,24 @@
+{
+  "name": "quadratic",
+  "version": "1.0.0",
+  "description": "Tool to finding roots of a quadratic equation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "quadratic",
+    "equation",
+    "root"
+  ],
+  "author": "PT DayaTani Digital Indonesia",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^1.6.3",
+    "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
+  }
+}
