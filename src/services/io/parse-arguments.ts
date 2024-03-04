@@ -5,9 +5,9 @@ const parseArguments = (args: string[]): CoefficientPack => {
     throw new Error('kurang oi')
   }
 
-  const a = parseInt(args[2])
-  const b = parseInt(args[3])
-  const c = parseInt(args[4])
+  const a = parseFloat(args[2])
+  const b = parseFloat(args[3])
+  const c = parseFloat(args[4])
 
   if (isNaN(a) || isNaN(b) || isNaN(c)) {
     throw new Error('yang bener masukinnya!')
