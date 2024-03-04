@@ -1,16 +1,15 @@
 import Printer from './types/printer'
-import findRootPack from './services/find-root-pack'
+import { Readable } from 'stream'
 import handleError from './services/io/handle-error'
-import parseArguments from './services/io/parse-arguments'
-import printResult from './services/io/print-result'
+import processLine from './services/process-line'
+import readline from 'readline'
 
-const main = (args: string[], outPrinter: Printer, errPrinter: Printer): void => {
+const main = async (input: Readable, outPrinter: Printer, errPrinter: Printer): Promise<void> => {
   try {
-    const coefficentPack = parseArguments(args)
-
-    const findResult = findRootPack(coefficentPack)
-
-    printResult(findResult, outPrinter)
+    const rl = readline.createInterface({ input, crlfDelay: Infinity })
+    for await (const line of rl) {
+      processLine(line, outPrinter)
+    }
   } catch (error) {
     handleError(error, errPrinter)
   }
