@@ -1,24 +1,28 @@
+import fs from 'fs'
 import main from '../src/main'
+import os from 'os'
 
 describe('quadratic CLI tool', () => {
-  const firstTwoArgs = ['node', './dist/index.js']
-
-  it.each([
-    [['1', '-5', '6'], '3\t2'],
-    [['2', '3', '-5'], '1\t-2.5'],
-    [['2', '4', '5'], ''],
-    [['1', '6', '9'], '-3\t-3'],
-  ])('finds roots of quadratic quations', (restArgs, expected) => {
+  it('finds roots of quadratic quations', async () => {
     // Prepare
-    const args = [...firstTwoArgs, ...restArgs]
+    const filePath = `${os.tmpdir()}/quadratic-test`
+    const content = '1\t-5\t6\n'
+      + '2\t3\t-5\n'
+      + '2\t4\t5\n'
+      + '1\t6\t9\n'
+    fs.writeFileSync(filePath, content)
+
     const outPrinter = jest.fn()
     const errPrinter = jest.fn()
 
     // Execute
-    main(args, outPrinter, errPrinter)
+    await main(fs.createReadStream(filePath), outPrinter, errPrinter)
 
     // Assert
-    expect(outPrinter).toHaveBeenCalledTimes(1)
-    expect(outPrinter).toHaveBeenCalledWith(expected)
+    expect(outPrinter).toHaveBeenCalledTimes(4)
+    expect(outPrinter).toHaveBeenNthCalledWith(1, '3\t2')
+    expect(outPrinter).toHaveBeenNthCalledWith(2, '1\t-2.5')
+    expect(outPrinter).toHaveBeenNthCalledWith(3, '')
+    expect(outPrinter).toHaveBeenNthCalledWith(4, '-3\t-3')
   })
 })
