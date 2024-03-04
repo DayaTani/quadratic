@@ -2,14 +2,12 @@ import { QuadraticError } from '../../../src/errors'
 import parseArguments from '../../../src/services/io/parse-arguments'
 
 describe('parseArguments', () => {
-  const firstTwoArgs = ['node', './dist/index.js']
-
-  it('parses command-line arguments and returns coefficient pack', () => {
+  it('parses line and returns coefficient pack', () => {
     // Prepare
-    const args = [...firstTwoArgs, '123', '-0.54', '6.73']
+    const line = '123\t-0.54\t6.73'
 
     // Execute
-    const coefficientPack = parseArguments(args)
+    const coefficientPack = parseArguments(line)
 
     // Assert
     expect(coefficientPack).toStrictEqual({
@@ -20,26 +18,18 @@ describe('parseArguments', () => {
   })
 
   it.each([
-    [[]],
-    [['123']],
-    [['123', '556']],
-  ])('throws error if provided arguments is not enough', restArgs => {
-    // Prepare
-    const args = [...firstTwoArgs, ...restArgs]
-
-    // Execute & assert
-    expect(() => parseArguments(args)).toThrow(QuadraticError)
+    [''],
+    ['123'],
+    ['123\t556'],
+  ])('throws error if provided coefficients are not enough', line => {
+    expect(() => parseArguments(line)).toThrow(QuadraticError)
   })
 
   it.each([
-    [['daniel', '456', '789']],
-    [['123', 'tan', '789']],
-    [['123', '456', 'kdjfbgds']],
-  ])('throws error if arguments cannot be parsed', restArgs => {
-    // Prepare
-    const args = [...firstTwoArgs, ...restArgs]
-
-    // Execute & assert
-    expect(() => parseArguments(args)).toThrow(QuadraticError)
+    ['daniel\t456\t789'],
+    ['123\ttan\t789'],
+    ['123\t456\tkdjfbgds'],
+  ])('throws error if arguments cannot be parsed', line => {
+    expect(() => parseArguments(line)).toThrow(QuadraticError)
   })
 })
