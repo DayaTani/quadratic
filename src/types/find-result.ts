@@ -1,6 +1,6 @@
 import RootPack from './root-pack'
 
-interface FindSuccessResult {
+export interface FindSuccessResult {
   success: true
   rootPack: RootPack
 }
