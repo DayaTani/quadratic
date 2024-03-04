@@ -1,3 +1,4 @@
+import { QuadraticError } from '../../../src/errors'
 import parseArguments from '../../../src/services/io/parse-arguments'
 
 describe('parseArguments', () => {
@@ -27,7 +28,7 @@ describe('parseArguments', () => {
     const args = [...firstTwoArgs, ...restArgs]
 
     // Execute & assert
-    expect(() => parseArguments(args)).toThrow(Error)
+    expect(() => parseArguments(args)).toThrow(QuadraticError)
   })
 
   it.each([
@@ -39,6 +40,6 @@ describe('parseArguments', () => {
     const args = [...firstTwoArgs, ...restArgs]
 
     // Execute & assert
-    expect(() => parseArguments(args)).toThrow(Error)
+    expect(() => parseArguments(args)).toThrow(QuadraticError)
   })
 })
