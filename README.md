@@ -44,7 +44,7 @@ Example usage:
 yarn start < input.txt > output.txt
 ```
 
-Here, input.txt contains coefficients, and output.txt will contain the roots of the corresponding quadratic equations.
+Here, `input.txt` contains coefficients, and `output.txt` will contain the roots of the corresponding quadratic equations.
 
 ## License
 
