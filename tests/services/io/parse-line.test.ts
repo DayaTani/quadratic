@@ -1,5 +1,5 @@
 import { QuadraticError } from '../../../src/errors'
-import parseArguments from '../../../src/services/io/parse-arguments'
+import parseLine from '../../../src/services/io/parse-line'
 
 describe('parseArguments', () => {
   it('parses line and returns coefficient pack', () => {
@@ -7,7 +7,7 @@ describe('parseArguments', () => {
     const line = '123\t-0.54\t6.73'
 
     // Execute
-    const coefficientPack = parseArguments(line)
+    const coefficientPack = parseLine(line)
 
     // Assert
     expect(coefficientPack).toStrictEqual({
@@ -22,7 +22,7 @@ describe('parseArguments', () => {
     ['123'],
     ['123\t556'],
   ])('throws error if provided coefficients are not enough', line => {
-    expect(() => parseArguments(line)).toThrow(QuadraticError)
+    expect(() => parseLine(line)).toThrow(QuadraticError)
   })
 
   it.each([
@@ -30,6 +30,6 @@ describe('parseArguments', () => {
     ['123\ttan\t789'],
     ['123\t456\tkdjfbgds'],
   ])('throws error if arguments cannot be parsed', line => {
-    expect(() => parseArguments(line)).toThrow(QuadraticError)
+    expect(() => parseLine(line)).toThrow(QuadraticError)
   })
 })
