@@ -5,12 +5,12 @@ import readline from 'readline'
 
 const main = async (input: Readable, output: Writable, errorStream: Writable): Promise<void> => {
   try {
-    const rl = readline.createInterface({ input, crlfDelay: Infinity })
+    const rl = readline.createInterface({ input, crlfDelay: Infinity })
     for await (const line of rl) {
       await processLine(line, output)
     }
   } catch (error) {
-    handleError(error, errorStream)
+    await handleError(error, errorStream)
   }
 }
 

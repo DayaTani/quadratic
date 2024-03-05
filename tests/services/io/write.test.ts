@@ -3,7 +3,6 @@ import os from 'os'
 import write from '../../../src/services/io/write'
 
 describe('write', () => {
-
   it('should write message to a writable stream without error', async () => {
     // Prepare
     const filePath = `${os.tmpdir()}/test-file.txt`

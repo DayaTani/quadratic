@@ -6,12 +6,12 @@ import os from 'os'
 describe('handleError', () => {
   const filePath = `${os.tmpdir()}/handle-error`
 
-  it('prints error if the error is QuadraticError', () => {
+  it('prints error if the error is QuadraticError', async () => {
     // Prepare
     const error = new QuadraticError('some error')
 
     // Execute
-    handleError(error, fs.createWriteStream(filePath))
+    await handleError(error, fs.createWriteStream(filePath))
 
     // Assert
     expect(fs.readFileSync(filePath, { encoding: 'utf8' })).toBe('some error\n')
@@ -19,12 +19,12 @@ describe('handleError', () => {
     fs.rmSync(filePath)
   })
 
-  it('throws the error if the error is not QuadraticError', () => {
+  it('throws the error isntance if it is not QuadraticError', async () => {
     // Prepare
     const error = new Error('other error')
 
     // Execute & assert
-    expect(() => handleError(error, fs.createWriteStream(filePath))).toThrow('other error')
+    await expect(handleError(error, fs.createWriteStream(filePath))).rejects.toThrow('other error')
 
     expect(fs.existsSync(filePath)).toBe(false)
   })
