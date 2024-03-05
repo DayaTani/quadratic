@@ -27,6 +27,12 @@ describe('main', () => {
     handleErrorSpy.mockRestore()
 
     fs.rmSync(inFilePath)
+    if (fs.existsSync(outFilePath)) {
+      fs.rmSync(outFilePath)
+    }
+    if (fs.existsSync(errFilePath)) {
+      fs.rmSync(errFilePath)
+    }
   })
 
   it('finds root of a quadratic equation', async () => {

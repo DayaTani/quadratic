@@ -1,7 +1,7 @@
 import { QuadraticError } from '../../../src/errors'
 import parseLine from '../../../src/services/io/parse-line'
 
-describe('parseArguments', () => {
+describe('parseLine', () => {
   it('parses line and returns coefficient pack', () => {
     // Prepare
     const line = '123\t-0.54\t6.73'

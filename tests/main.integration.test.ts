@@ -31,5 +31,8 @@ describe('quadratic CLI tool', () => {
     expect(fs.readFileSync(outFilePath, { encoding: 'utf8' })).toBe(expectedContent)
 
     fs.rmSync(outFilePath)
+    if (fs.existsSync(errFilePath)) {
+      fs.rmSync(errFilePath)
+    }
   })
 })

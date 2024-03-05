@@ -1,42 +1,26 @@
 import * as findRootPackModule from '../../src/services/find-root-pack'
-import * as handleErrorModule from '../../src/services/io/handle-error'
-import * as parseArgumentsModule from '../../src/services/io/parse-arguments'
+import * as parseLineModule from '../../src/services/io/parse-line'
 import * as printResultModule from '../../src/services/io/print-result'
 import fs from 'fs'
 import os from 'os'
 import processLine from '../../src/services/process-line'
 
-describe('main', () => {
-  const line = '7\t2\t4'
-
-  let parseArgumentSpy: jest.SpyInstance
-  let findRootPackSpy: jest.SpyInstance
-  let printResultSpy: jest.SpyInstance
-  let handleErrorSpy: jest.SpyInstance
-
-  beforeEach(() => {
-    parseArgumentSpy = jest.spyOn(parseArgumentsModule, 'default')
-    findRootPackSpy = jest.spyOn(findRootPackModule, 'default')
-    printResultSpy = jest.spyOn(printResultModule, 'default')
-    handleErrorSpy = jest.spyOn(handleErrorModule, 'default')
-  })
-
-  afterEach(() => {
-    parseArgumentSpy.mockRestore()
-    findRootPackSpy.mockRestore()
-    printResultSpy.mockRestore()
-    handleErrorSpy.mockRestore()
-  })
-
+describe('processLine', () => {
   it('finds root of a quadratic equation', async () => {
     // Prepare
+    const line = '7\t2\t4'
+
+    const parseLineSpy = jest.spyOn(parseLineModule, 'default')
+    const findRootPackSpy = jest.spyOn(findRootPackModule, 'default')
+    const printResultSpy = jest.spyOn(printResultModule, 'default')
+
     const coefficientPack = { a: 1, b: 2, c: 3 }
-    parseArgumentSpy.mockReturnValue(coefficientPack)
+    parseLineSpy.mockReturnValue(coefficientPack)
 
     const findResult = { success: true, rootPack: { r1: -9, r2: 5.6 } }
     findRootPackSpy.mockReturnValue(findResult)
 
-    printResultSpy.mockImplementation(() => {})
+    printResultSpy.mockResolvedValue()
 
     const stream = fs.createWriteStream(`${os.tmpdir()}/process-line`)
 
@@ -44,8 +28,8 @@ describe('main', () => {
     await processLine(line, stream)
 
     // Assert
-    expect(parseArgumentSpy).toHaveBeenCalledTimes(1)
-    expect(parseArgumentSpy).toHaveBeenCalledWith('7\t2\t4')
+    expect(parseLineSpy).toHaveBeenCalledTimes(1)
+    expect(parseLineSpy).toHaveBeenCalledWith('7\t2\t4')
 
     expect(findRootPackSpy).toHaveBeenCalledTimes(1)
     expect(findRootPackSpy).toHaveBeenCalledWith(coefficientPack)
@@ -53,7 +37,10 @@ describe('main', () => {
     expect(printResultSpy).toHaveBeenCalledTimes(1)
     expect(printResultSpy).toHaveBeenCalledWith(findResult, stream)
 
-    expect(handleErrorSpy).not.toHaveBeenCalled()
+    // Cleanup
+    parseLineSpy.mockRestore()
+    findRootPackSpy.mockRestore()
+    printResultSpy.mockRestore()
   })
 
 })
