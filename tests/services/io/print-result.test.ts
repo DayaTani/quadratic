@@ -6,11 +6,6 @@ import printResult from '../../../src/services/io/print-result'
 describe('printResult', () => {
   const filePath = `${os.tmpdir()}/print-result.tsv`
 
-  afterEach(() => {
-    // if (fs.existsSync(filePath)) {
-    // }
-  })
-
   it('prints RootPack as TSV if success', async () => {
     // Prepare
     const findResult: FindResult = {
@@ -24,6 +19,7 @@ describe('printResult', () => {
     // Assert
     expect(fs.readFileSync(filePath, { encoding: 'utf8' })).toBe('567\t-986\n')
 
+    fs.rmSync(filePath)
   })
 
   it('prints empty string if not success', async () => {
