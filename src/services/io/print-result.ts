@@ -1,6 +1,6 @@
 import FindResult from '../../types/find-result'
 import { Writable } from 'stream'
-import write from './write'
+import writeln from './writeln'
 
 /**
  * Prints the result of finding roots of a quadratic equation to the output stream.
@@ -10,14 +10,14 @@ import write from './write'
  */
 const printResult = async (findResult: FindResult, output: Writable): Promise<void> => {
   if (!findResult.success) {
-    await write(output, '\n')
+    await writeln('', output)
     return
   }
 
   /** The RootPack extracted from the successful FindResult. */
   const rootPack = findResult.rootPack
 
-  await write(output, `${rootPack.r1}\t${rootPack.r2}\n`)
+  await writeln(`${rootPack.r1}\t${rootPack.r2}`, output)
 }
 
 export default printResult

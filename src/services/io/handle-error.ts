@@ -1,6 +1,6 @@
 import { QuadraticError } from '../../errors'
 import { Writable } from 'stream'
-import write from './write'
+import writeln from './writeln'
 
 /**
  * Handles errors that occur during the execution of the application.
@@ -15,7 +15,7 @@ const handleError = async (error: unknown, errorStream: Writable): Promise<void>
     throw error
   }
 
-  await write(errorStream, `${error.message}\n`)
+  await writeln(error.message, errorStream)
 }
 
 export default handleError
