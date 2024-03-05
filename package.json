@@ -1,6 +1,6 @@
 {
   "name": "quadratic",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Tool to finding roots of a quadratic equation.",
   "main": "index.js",
   "scripts": {
