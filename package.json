@@ -8,6 +8,9 @@
     "start": "node ./dist/index.js",
     "test": "jest --coverage"
   },
+  "engines": {
+    "node": ">= 21.6"
+  },
   "keywords": [
     "quadratic",
     "equation",
