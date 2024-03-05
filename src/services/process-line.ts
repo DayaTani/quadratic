@@ -18,7 +18,6 @@ const processLine = async (line: string, output: Writable): Promise<void> => {
   /** The result of finding the roots of the quadratic equation. */
   const findResult = findRootPack(coefficientPack)
 
-  /** Print the result to the output stream. */
   await printResult(findResult, output)
 }
 
