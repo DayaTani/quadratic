@@ -34,7 +34,7 @@ yarn build
 
 ### Command Line Interface (CLI)
 
-The CLI reads input from stdin and writes output to stdout in tab-separated values (TSV) format.
+The CLI reads input from `stdin` and writes output to `stdout` in tab-separated values (TSV) format.
 
 To use the CLI, pipe input from a file or manually enter coefficients of quadratic equations separated by tabs. For example:
 
