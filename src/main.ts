@@ -21,6 +21,7 @@ const main = async (input: Readable, output: Writable, errorStream: Writable): P
     }
   } catch (error) {
     await handleError(error, errorStream)
+    process.exitCode = 1
   }
 }
 

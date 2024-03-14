@@ -23,6 +23,8 @@ describe('quadratic CLI tool', () => {
     )
 
     // Assert
+    expect(process.exitCode).toBe(undefined)
+
     const expectedContent = '3\t2\n'
       + '1\t-2.5\n'
       + '\n'
@@ -30,6 +32,7 @@ describe('quadratic CLI tool', () => {
 
     expect(fs.readFileSync(outFilePath, { encoding: 'utf8' })).toBe(expectedContent)
 
+    // Cleanup
     fs.rmSync(outFilePath)
     if (fs.existsSync(errFilePath)) {
       fs.rmSync(errFilePath)

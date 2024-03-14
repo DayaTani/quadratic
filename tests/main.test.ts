@@ -52,9 +52,11 @@ describe('main', () => {
     expect(processLineSpy).toHaveBeenNthCalledWith(3, 'daniel\ttan\tfriska', outStream)
 
     expect(handleErrorSpy).not.toHaveBeenCalled()
+
+    expect(process.exitCode).toBe(undefined)
   })
 
-  it('handles thrown error', async () => {
+  it('handles thrown error and set exit code to 1', async () => {
     // Prepare
     const error = new Error('ada error')
     processLineSpy.mockImplementation(() => { throw error })
@@ -73,5 +75,10 @@ describe('main', () => {
 
     expect(handleErrorSpy).toHaveBeenCalledTimes(1)
     expect(handleErrorSpy).toHaveBeenCalledWith(error, errStream)
+
+    expect(process.exitCode).toBe(1)
+
+    // Cleanup
+    process.exitCode = 0
   })
 })
